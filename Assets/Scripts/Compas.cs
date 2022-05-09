@@ -10,7 +10,7 @@ public class Compas : MonoBehaviour
 
     void FixedUpdate()
     {
-        vector.z = transform.eulerAngles.y;
+        vector.y = -transform.eulerAngles.y;
         arrow.localEulerAngles = vector; 
     }
 

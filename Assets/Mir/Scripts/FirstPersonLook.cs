@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CharacterSight : MonoBehaviour
+public class FirstPersonLook : MonoBehaviour
 {
     [SerializeField]
     Transform character;
@@ -12,11 +12,10 @@ public class CharacterSight : MonoBehaviour
 
     public bool canLook = true;
 
-
     void Reset()
     {
         // Get the character from the FirstPersonMovement in parents.
-        character = GetComponentInParent<CharacterWalking>().transform;
+        character = GetComponentInParent<FirstPersonMovement>().transform;
     }
 
     void Start()
@@ -24,6 +23,7 @@ public class CharacterSight : MonoBehaviour
         // Lock the mouse cursor to the game screen.
         Cursor.lockState = CursorLockMode.Locked;
     }
+
 
     void Update()
     {
@@ -41,4 +41,5 @@ public class CharacterSight : MonoBehaviour
             character.localRotation = Quaternion.AngleAxis(velocity.x, Vector3.up);
         }
     }
+
 }
