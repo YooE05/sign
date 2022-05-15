@@ -25,10 +25,10 @@ public class MapFunctions : MonoBehaviour
             }
         }
 
-        float x = map.transform.localScale.x / 2 * (transform.position.x / WalkZone.transform.localScale.x / 2);
-        float y = map.transform.localScale.y / 2 * (transform.position.z / WalkZone.transform.localScale.z / 2);
+        float x = map.transform.localScale.x / 2 * (transform.position.x / WalkZone.transform.localScale.x * 2);
+        float y = map.transform.localScale.y / 2 * (transform.position.z / WalkZone.transform.localScale.z * 2);
 
-        playerMarker.transform.localPosition = new Vector3(x, y, -0.7f);
+        playerMarker.transform.localPosition = new Vector3(-y, x, -0.7f);
 
     }
 
@@ -40,16 +40,21 @@ public class MapFunctions : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
 
-            Debug.DrawRay(ray.origin, ray.direction);
-
-            if (Vector3.Distance(mapMarker.transform.position, hit.point) > markerDeleteRadius)
+            Debug.DrawRay(ray.origin, ray.direction, Color.red);
+            if (hit.collider.tag == "map")
             {
-                mapMarker.SetActive(true);
-                mapMarker.transform.position = hit.point; }
-            else
-            {
-                mapMarker.SetActive(false);
+                if (Vector3.Distance(mapMarker.transform.position, hit.point) > markerDeleteRadius)
+                {
+                    mapMarker.SetActive(true);
+                    mapMarker.transform.position = hit.point;
                 }
+                else
+                {
+                    mapMarker.SetActive(false);
+                }
+            }
+
+
 
 
             //another difficult way to do markers on map

@@ -7,6 +7,7 @@ public class CharacterInteraction : MonoBehaviour
 {
 
     List<GameObject> enterGO = new List<GameObject>();
+    List<GameObject> deletedGO = new List<GameObject>();
     [SerializeField] GameObject E;
 
     void Update()
@@ -25,7 +26,16 @@ public class CharacterInteraction : MonoBehaviour
             foreach (GameObject obj in enterGO)
             {
                 Interaction objInt = obj.GetComponent<Interaction>();
-                obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+                deletedGO.Add(obj);
+               //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+            }
+            foreach (GameObject obj in deletedGO)
+            {
+                if(enterGO.Contains(obj))
+                { enterGO.Remove(obj);
+                Destroy(obj); }
+                  
+                //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
             }
         }
     }

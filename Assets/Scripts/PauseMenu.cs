@@ -9,6 +9,11 @@ public class PauseMenu : MonoBehaviour
     public GameObject aim;
     public CharacterSight characterSight;
 
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -25,6 +30,7 @@ public class PauseMenu : MonoBehaviour
     }
    public void Resume()
     {
+
         foreach (var UIPanel in pauseMenuUI)
         {
             UIPanel.SetActive(false);
@@ -39,6 +45,8 @@ public class PauseMenu : MonoBehaviour
     }
     void Pause()
     {
+
+        Cursor.lockState = CursorLockMode.Confined;
         pauseMenuUI[0].SetActive(true);
         aim.SetActive(false);
         characterSight.canLook = false;
