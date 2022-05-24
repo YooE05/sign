@@ -24,7 +24,8 @@ public class MapFunctions : MonoBehaviour
                 SetMarker();
             }
         }
-
+        //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        //Debug.DrawRay(ray.origin, ray.direction, Color.red);
         float x = map.transform.localScale.x / 2 * (transform.position.x / WalkZone.transform.localScale.x * 2);
         float y = map.transform.localScale.y / 2 * (transform.position.z / WalkZone.transform.localScale.z * 2);
 
@@ -54,65 +55,6 @@ public class MapFunctions : MonoBehaviour
                 }
             }
 
-
-
-
-            //another difficult way to do markers on map
-            //Instantiate(mapMarker, hit.point, Quaternion.identity, transform);
-            //Debug.DrawRay(Vector3.zero, hit.point, Color.red);
-            // Debug.DrawRay(Vector3.zero, transform.position, Color.blue);
-            /*if (hit.collider.tag == "map")
-            {
-                Vector3 localMapPos = hit.point - transform.position;
-                Debug.Log(transform.eulerAngles.y);
-
-
-                if (hit.point.x >= transform.position.x)
-                {
-                    Debug.Log("x1>x0");
-
-                    if (hit.point.z > transform.position.z)
-                    {
-                        Debug.Log("z1>z0");
-                        if (transform.eulerAngles.y >= 135 && transform.eulerAngles.y < 225)
-                        { k = -1; }
-                        else
-                        { k = 1; }
-                    }
-                    else
-                    {
-                        Debug.Log("z1<z0");
-                        if (transform.eulerAngles.y < 45 || transform.eulerAngles.y >= 315)
-                        { k = 1; }
-                        else
-                        { k = -1; }
-                    }
-
-
-                }
-                else
-                {
-                    Debug.Log("x1<x0");
-
-                    if (hit.point.z > transform.position.z)
-                    {
-                        Debug.Log("z1>z0");
-                        if (transform.eulerAngles.y >= 45 && transform.eulerAngles.y < 135)
-                        { k = -1; }
-                        else
-                        { k = 1; }
-                    }
-                    else
-                    {
-                        Debug.Log("z1<z0");
-                        k = -1;
-                    }
-
-                }
-
-                mapMarker.transform.localPosition = new Vector3(k * Mathf.Sqrt(localMapPos.x * localMapPos.x + localMapPos.z * localMapPos.z), localMapPos.y, -0.57f);
-
-            }*/
         }
     }
 }

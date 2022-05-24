@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Vector3 endMapPosition;
     [SerializeField] Vector3 startMapPosition;
 
+    static public bool compassAdded = false;
     bool mapIsActive = false;
     bool isCursorOn = false;
 
@@ -46,7 +47,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M) && compassAdded)
         {
             mapIsActive = !mapIsActive;
             mapAndCompass.SetActive(mapIsActive);
@@ -68,18 +69,18 @@ public class GameController : MonoBehaviour
         if (mapIsActive)
         {
 
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                if (playerMovement.canMove)
-                { StopAllCoroutines(); }
 
-                Cursor.lockState = CursorLockMode.Confined;
+                StopAllCoroutines();
+                // Cursor.lockState = CursorLockMode.Confined;
 
                 playerMovement.canMove = false;
                 playerLook.canLook = false;
 
                 isCursorOn = true;
                 mapFunctions.mapIsOpen = true;
+                // Cursor.visible = true;
 
                 StartCoroutine(rotateCamera(Quaternion.Euler(0f, 0f, 0f), mapAnimationDelay));
 
@@ -87,14 +88,14 @@ public class GameController : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 playerMovement.canMove = true;
                 playerLook.canLook = true;
                 isCursorOn = false;
                 mapFunctions.mapIsOpen = false;
                 StopAllCoroutines();
-
+                // Cursor.visible = false;
                 StartCoroutine(translateMap(startMapPosition, mapAnimationDelay));
+
             }
 
 

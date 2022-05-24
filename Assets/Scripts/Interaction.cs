@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
-    [Header("Interacrion")]
+    [Header("Interaction")]
     public bool IsInteractable=true;
 }

@@ -9,6 +9,7 @@ public class CharacterInteraction : MonoBehaviour
     List<GameObject> enterGO = new List<GameObject>();
     List<GameObject> deletedGO = new List<GameObject>();
     [SerializeField] GameObject E;
+    
 
     void Update()
     {
@@ -26,15 +27,19 @@ public class CharacterInteraction : MonoBehaviour
             foreach (GameObject obj in enterGO)
             {
                 Interaction objInt = obj.GetComponent<Interaction>();
+                if(obj.tag=="compass")
+                { GameController.compassAdded = true; }
                 deletedGO.Add(obj);
-               //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+                //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
             }
             foreach (GameObject obj in deletedGO)
             {
-                if(enterGO.Contains(obj))
-                { enterGO.Remove(obj);
-                Destroy(obj); }
-                  
+                if (enterGO.Contains(obj))
+                {
+                    enterGO.Remove(obj);
+                    Destroy(obj);
+                }
+
                 //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
             }
         }

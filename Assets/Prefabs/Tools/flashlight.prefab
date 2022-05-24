@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7238366640125274185}
   - component: {fileID: 4870413552208616579}
   - component: {fileID: 6077250302232668661}
+  - component: {fileID: 5491444482760438255}
   m_Layer: 0
   m_Name: flashlight
   m_TagString: Untagged
@@ -98,3 +99,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6239881831769578202, guid: 95f2e46eb722a514097445041189ed6e, type: 3}
+--- !u!114 &5491444482760438255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383803140038933846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f711a4aae575bb540926710ac265d1e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsInteractable: 1
