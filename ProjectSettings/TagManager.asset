@@ -6,6 +6,9 @@ TagManager:
   tags:
   - map
   - compass
+  - hint
+  - forestTrigger1
+  - forestTrigger2
   layers:
   - Default
   - TransparentFX

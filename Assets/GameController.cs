@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] GameObject mapAndCompass;
     [SerializeField] GameObject map;
+    [SerializeField] GameObject ultraviolet;
     [SerializeField] GameObject player;
     [SerializeField] MapFunctions mapFunctions;
 
@@ -14,30 +16,33 @@ public class GameController : MonoBehaviour
     [SerializeField] Vector3 endMapPosition;
     [SerializeField] Vector3 startMapPosition;
 
-    static public bool compassAdded = false;
+
     bool mapIsActive = false;
+    static public bool ultraIsActive = false;
     bool isCursorOn = false;
-
+    bool firstMapCheck = true;
     public Camera cam;
-    public float zoomMultiplier = 2;
-    public float defaultFov = 90;
-    public float zoomDuration = 2;
 
-    // public FirstPersonMovement playerMovement;
-    //public FirstPersonLook playerLook;
     public CharacterWalking playerMovement;
     public CharacterSight playerLook;
+    [SerializeField] CharacterInteraction characterInteraction;
+
+    public Coroutine textCoroutine;
+    [SerializeField] TextMeshProUGUI infoText;
 
     //[SerializeField] Texture2D cursorSprite;
 
     private void Start()
     {
+
+        infoText.text = "";
+        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0f);
         mapIsActive = mapAndCompass.activeSelf;
-        SetUoCursor();
+        SetUpCursor();
         mapFunctions.cam = cam;
     }
 
-    private void SetUoCursor()
+    private void SetUpCursor()
     {
         //Cursor.lockState = CursorLockMode.Confined;
         // Cursor.SetCursor(cursorSprite, Vector2.zero, CursorMode.Auto);
@@ -46,74 +51,60 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.M) && compassAdded)
+        if (!PauseMenu.gameIsPaused)
         {
-            mapIsActive = !mapIsActive;
-            mapAndCompass.SetActive(mapIsActive);
+            if (Input.GetKeyDown(KeyCode.M) && characterInteraction.compassAdded && !ultraIsActive)
+            {
+                mapIsActive = !mapIsActive;
+                mapAndCompass.SetActive(mapIsActive);
+                if (firstMapCheck)
+                {
+                    firstMapCheck = false;
+                    StopShowingText();
+                    ShowText("Hold right mouse button to zoom a map, left to put a marker", 5f);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.V) && characterInteraction.compassAdded && !mapIsActive)
+            {
+                ultraIsActive = !ultraIsActive;
+                ultraviolet.SetActive(ultraIsActive);
+            }
 
+            if (mapIsActive)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+
+                    StopAllCoroutines();
+                    Invoke("KillMe",3f);
+                    // Cursor.lockState = CursorLockMode.Confined;
+
+                    playerMovement.canMove = false;
+                    playerLook.canLook = false;
+
+                    isCursorOn = true;
+                    mapFunctions.mapIsOpen = true;
+                    // Cursor.visible = true;
+
+                    StartCoroutine(rotateCamera(Quaternion.Euler(0f, 0f, 0f), mapAnimationDelay));
+
+                    StartCoroutine(translateMap(endMapPosition, mapAnimationDelay));
+                }
+                if (Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    playerMovement.canMove = true;
+                    playerLook.canLook = true;
+                    isCursorOn = false;
+                    mapFunctions.mapIsOpen = false;
+                    StopAllCoroutines();
+                    Invoke("KillMe", 5f);
+                    // Cursor.visible = false;
+                    StartCoroutine(translateMap(startMapPosition, mapAnimationDelay));
+
+                }
+            }
         }
 
-        /* if (!mapIsActive)
-         {
-             if (Input.GetMouseButton(1))
-             {
-                 ZoomCamera(defaultFov / zoomMultiplier);
-             }
-             else if (cam.fieldOfView != defaultFov)
-             {
-                 ZoomCamera(defaultFov);
-             }
-         }
-         else*/
-        if (mapIsActive)
-        {
-
-            if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-
-                StopAllCoroutines();
-                // Cursor.lockState = CursorLockMode.Confined;
-
-                playerMovement.canMove = false;
-                playerLook.canLook = false;
-
-                isCursorOn = true;
-                mapFunctions.mapIsOpen = true;
-                // Cursor.visible = true;
-
-                StartCoroutine(rotateCamera(Quaternion.Euler(0f, 0f, 0f), mapAnimationDelay));
-
-                StartCoroutine(translateMap(endMapPosition, mapAnimationDelay));
-            }
-            if (Input.GetKeyUp(KeyCode.Mouse1))
-            {
-                playerMovement.canMove = true;
-                playerLook.canLook = true;
-                isCursorOn = false;
-                mapFunctions.mapIsOpen = false;
-                StopAllCoroutines();
-                // Cursor.visible = false;
-                StartCoroutine(translateMap(startMapPosition, mapAnimationDelay));
-
-            }
-
-
-        }
-
-        /*
-            void ZoomMap(float target)
-            {
-
-                float distCovered = (Time.time - startTime) * speed;
-
-                // Fraction of journey completed equals current distance divided by total distance.
-                float fractionOfJourney = distCovered / journeyLength;
-
-                // Set our position as a fraction of the distance between the markers.
-                transform.position = Vector3.Lerp(startMapPosition, openMapPosition, fractionOfJourney);
-            }
-        */
     }
     IEnumerator translateMap(Vector3 targetPosition, float duration)
     {
@@ -148,11 +139,50 @@ public class GameController : MonoBehaviour
         cam.gameObject.transform.localRotation = targetRotation;
     }
 
-
-    void ZoomCamera(float target)
+    public void ShowText(string text, float timeToWait)
     {
-        float angle = Mathf.Abs((defaultFov / zoomMultiplier) - defaultFov);
-        cam.fieldOfView = Mathf.MoveTowards(cam.fieldOfView, target, angle / zoomDuration * Time.deltaTime);
+        textCoroutine = StartCoroutine(ShowTextCoroutine(text, timeToWait));
+    }
+    public void StopShowingText()
+    {
+        StopAllCoroutines();
+        //StopCoroutine(textCoroutine);
+    }
+
+    void KillMe()
+    {
+        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0f);
+    }
+    IEnumerator ShowTextCoroutine(string text, float timeToWait)
+    {
+        //показать текст I need to find my compass first
+        // infoText.color =  new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0f);
+        infoText.text = text;
+        float time = infoText.color.a, duration = 1f;
+        float A;
+        while (time < duration)
+        {
+            A = Mathf.Lerp(0f, 1f, time / duration);
+            infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, A); ;
+            time += Time.deltaTime;
+            yield return null;
+        }
+        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1f);
+        yield return new WaitForSeconds(timeToWait);
+        time = 1f;
+        duration = 1f;
+        while (time >= 0f)
+        {
+            A = Mathf.Lerp(0f, 1f, time / duration);
+            infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, A); ;
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0f);
+        //скрыть текст
+        infoText.text = "";
+        Debug.Log("end;");
+        //infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1f);
     }
 
 }
