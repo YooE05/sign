@@ -26,11 +26,12 @@ public class GameController : MonoBehaviour
     public CharacterWalking playerMovement;
     public CharacterSight playerLook;
     [SerializeField] CharacterInteraction characterInteraction;
+    [SerializeField] CharacterInteractionCave characterInteractionCave;
 
     public Coroutine textCoroutine;
     [SerializeField] TextMeshProUGUI infoText;
 
-    //[SerializeField] Texture2D cursorSprite;
+    bool isCaveLevel;
 
     private void Start()
     {
@@ -49,11 +50,15 @@ public class GameController : MonoBehaviour
         Cursor.visible = false;
     }
 
+
+    bool haveCompass;
     void Update()
     {
+        haveCompass = isCaveLevel ? true : characterInteraction.compassAdded;
+
         if (!PauseMenu.gameIsPaused)
         {
-            if (Input.GetKeyDown(KeyCode.M) && characterInteraction.compassAdded && !ultraIsActive)
+            if (Input.GetKeyDown(KeyCode.M) && haveCompass && !ultraIsActive)
             {
                 mapIsActive = !mapIsActive;
                 mapAndCompass.SetActive(mapIsActive);
@@ -64,7 +69,7 @@ public class GameController : MonoBehaviour
                     ShowText("Hold right mouse button to zoom a map, left to put a marker", 5f);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.V) && characterInteraction.compassAdded && !mapIsActive)
+            if (Input.GetKeyDown(KeyCode.V) && haveCompass && !mapIsActive)
             {
                 ultraIsActive = !ultraIsActive;
                 ultraviolet.SetActive(ultraIsActive);

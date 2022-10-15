@@ -28,9 +28,16 @@ public class CharacterInteraction : MonoBehaviour
     Vector3 Ray_start_position;
 
     bool lastHintChecked = true;
+
+
+    public bool isCaveLevel;
     private void Start()
     {
-        crntCorSun = StartCoroutine(sunRotate(Quaternion.Euler(22, 35, 0), 60f));
+        if (!isCaveLevel)
+        {
+            crntCorSun = StartCoroutine(sunRotate(Quaternion.Euler(22, 35, 0), 60f));
+        }
+
         Ray_start_position = new Vector3(Screen.width / 2, Screen.height / 2, 0);
     }
     void Update()
@@ -97,7 +104,6 @@ public class CharacterInteraction : MonoBehaviour
             }
         }
 
-
     }
     public void StopShowText()
     {
@@ -138,12 +144,14 @@ public class CharacterInteraction : MonoBehaviour
             gameObject.GetComponent<BoxCollider>().center = new Vector3(0, 0, 1.2f);
             gameObject.GetComponent<BoxCollider>().size = new Vector3(0, 0, 1.035f);
         }
+        if(!isCaveLevel)
+        { 
         StopCoroutine(crntCorSun);
         crntCorSun = StartCoroutine(sunRotate(Quaternion.Euler(18 + currentStickers * 37, 35, 0), 60f));
-        //if(crntCorSky!=null)
+        }
+       
         RenderSettings.skybox.Lerp(firstSky, secondSky, currentStickers * 0.2f);
-        /*{StopCoroutine(crntCorSky); }
-        crntCorSky =StartCoroutine(skuboxChange(10f));*/
+
         //звук карандаша
         gameObject.GetComponent<AudioSource>().Play();
         //текст

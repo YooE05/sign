@@ -9,6 +9,7 @@ TagManager:
   - hint
   - forestTrigger1
   - forestTrigger2
+  - lever
   layers:
   - Default
   - TransparentFX
