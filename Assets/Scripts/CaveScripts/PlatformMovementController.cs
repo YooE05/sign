@@ -10,6 +10,7 @@ public class PlatformMovementController : MonoBehaviour
     [SerializeField] float unit = 2f;
 
     public bool canPressButton;
+    [SerializeField] bool moveByX;
 
     private void Awake()
     {
@@ -76,8 +77,16 @@ public class PlatformMovementController : MonoBehaviour
     {
         float remainTime = 0f;
         Vector3 startPos = pl.gameObject.transform.localPosition;
-        Vector3 endPos = pl.gameObject.transform.localPosition + new Vector3(off, 0f, 0f) * unit;
-
+        Vector3 endPos;
+        if (moveByX)
+        {
+            endPos = pl.gameObject.transform.localPosition + new Vector3(off, 0f, 0f) * unit;
+        }
+        else
+        {
+            endPos = pl.gameObject.transform.localPosition + new Vector3(0f, 0f, off) * unit;
+        }
+ 
 
         while (remainTime < delay * Mathf.Abs(off))
         {
