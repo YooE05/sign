@@ -10,7 +10,7 @@ public class CharacterSight : MonoBehaviour
     public Vector2 velocity;
     Vector2 frameVelocity;
 
-    public bool canLook = true;
+    static public bool canLook = true;
 
 
     void Update()

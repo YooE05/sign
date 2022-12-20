@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlatformButton : MonoBehaviour, IInteractable
 {
     PlatformMovementController movementController;
+
+    public bool interactOnlyInMinigame { get => false; }
     private void Awake()
     {
         movementController = FindObjectOfType<PlatformMovementController>();
@@ -20,6 +22,8 @@ public class PlatformButton : MonoBehaviour, IInteractable
             movementController.MovePlatform(platformsToMove);
         }
     }
+    public void SecondInteract() { }
+
     public string SetDescriptiion()
     {
         if (movementController.canPressButton)

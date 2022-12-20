@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
     public Camera cam;
 
     public CharacterWalking playerMovement;
-    public CharacterSight playerLook;
+  public CharacterSight playerLook;
     [SerializeField] CharacterInteraction characterInteraction;
     [SerializeField] CharacterInteractionCave characterInteractionCave;
 
@@ -84,8 +84,8 @@ public class GameController : MonoBehaviour
                     Invoke("KillMe",3f);
                     // Cursor.lockState = CursorLockMode.Confined;
 
-                    playerMovement.canMove = false;
-                    playerLook.canLook = false;
+                    CharacterWalking.canMove = false;
+                    CharacterSight.canLook = false;
 
                     isCursorOn = true;
                     mapFunctions.mapIsOpen = true;
@@ -97,8 +97,8 @@ public class GameController : MonoBehaviour
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse1))
                 {
-                    playerMovement.canMove = true;
-                    playerLook.canLook = true;
+                    CharacterWalking.canMove = true;
+                    CharacterSight.canLook = true;
                     isCursorOn = false;
                     mapFunctions.mapIsOpen = false;
                     StopAllCoroutines();

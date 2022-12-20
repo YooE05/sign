@@ -34,57 +34,23 @@ public class CharacterInteractionCave : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, intDistance))
         {
+            
             IInteractable interactableObj = hit.collider.gameObject.GetComponent<IInteractable>();
 
             if (interactableObj != null)
             {
-                isHit = true;
-                if (Input.GetKeyDown(KeyCode.E))
+                if (!interactableObj.interactOnlyInMinigame&& !GameControllerCave.journalIsActive)
                 {
-                    interactableObj.Interact();
-                    interactableObj.SetDescriptiion();
+                    isHit = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        interactableObj.Interact();
+                        interactableObj.SetDescriptiion();
+                    }
                 }
             }
-
-
         }
         E.SetActive(isHit);
-        /*
-        if (enterGO.Count > 0 )
-        {
-            E.SetActive(true);
-        }
-        else
-        {
-            E.SetActive(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) && E.activeSelf)
-        {
-
-            foreach (GameObject obj in enterGO)
-            {
-                Interaction objInt = obj.GetComponent<Interaction>();
-
-                if (obj.tag == "hint")
-                {
-
-                }
-                deletedGO.Add(obj);
-                //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-            }
-            foreach (GameObject obj in deletedGO)
-            {
-                if (enterGO.Contains(obj))
-                {
-                    enterGO.Remove(obj);
-                    Destroy(obj);
-                }
-
-                //obj.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-            }
-        }
-*/
     }
     public void StopShowText()
     {

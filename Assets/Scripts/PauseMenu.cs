@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
     public static bool gameIsPaused = false;
     public GameObject[] pauseMenuUI;
     public GameObject aim;
-    public CharacterSight characterSight;
+    // public CharacterSight characterSight;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
-   public void Resume()
+    public void Resume()
     {
 
         foreach (var UIPanel in pauseMenuUI)
@@ -39,8 +39,12 @@ public class PauseMenu : MonoBehaviour
         //PauseMenuUI.SetActive(false);
         aim.SetActive(true);
         Time.timeScale = 1f;
-        gameIsPaused =false;
-        characterSight.canLook = true;
+        gameIsPaused = false;
+        if (!GameControllerCave.journalIsActive)
+        {
+            CharacterSight.canLook = true;
+        }
+
         Cursor.visible = false;
     }
     void Pause()
@@ -49,7 +53,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         pauseMenuUI[0].SetActive(true);
         aim.SetActive(false);
-        characterSight.canLook = false;
+        CharacterSight.canLook = false;
         Time.timeScale = 0f;
         gameIsPaused = true;
         Cursor.visible = true;

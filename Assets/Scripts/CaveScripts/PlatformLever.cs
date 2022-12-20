@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlatformLever : MonoBehaviour, IInteractable
 {
     [SerializeField] PlatformButton button;
+    public bool interactOnlyInMinigame { get => false; }
 
     [Header("Stage1")]
     [SerializeField] List<Platform> firstStPlatforms = new List<Platform>();
@@ -52,6 +53,8 @@ public class PlatformLever : MonoBehaviour, IInteractable
         isFirstStage = !isFirstStage;
 
     }
+
+    public void SecondInteract() { }
     public string SetDescriptiion()
     {
         return "Потянуть";

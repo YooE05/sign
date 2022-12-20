@@ -6,24 +6,23 @@ using TMPro;
 public class GameControllerCave : MonoBehaviour
 {
     [SerializeField] GameObject mapAndCompass;
-    [SerializeField] GameObject map;
     [SerializeField] GameObject ultraviolet;
     [SerializeField] GameObject player;
-    [SerializeField] MapFunctions mapFunctions;
 
-    float mapAnimationDelay = 0.6f;
-
-    [SerializeField] Vector3 endMapPosition;
-    [SerializeField] Vector3 startMapPosition;
 
 
     bool mapIsActive = false;
     static public bool ultraIsActive = false;
     bool isCursorOn = false;
     bool firstMapCheck = true;
+
+    static public bool journalIsActive = false;
+    [SerializeField] GameObject journalGO;
+
+
     public Camera cam;
 
-    public CharacterWalking playerMovement;
+   // public CharacterWalking playerMovement;
     public CharacterSight playerLook;
     [SerializeField] CharacterInteractionCave characterInteractionCave;
 
@@ -39,7 +38,6 @@ public class GameControllerCave : MonoBehaviour
         infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0f);
         mapIsActive = mapAndCompass.activeSelf;
         SetUpCursor();
-        mapFunctions.cam = cam;
     }
 
     private void SetUpCursor()
@@ -53,7 +51,6 @@ public class GameControllerCave : MonoBehaviour
     bool haveCompass;
     void Update()
     {
-
         if (!PauseMenu.gameIsPaused)
         {
             if (Input.GetKeyDown(KeyCode.M) && !ultraIsActive)
@@ -64,84 +61,27 @@ public class GameControllerCave : MonoBehaviour
                 {
                     firstMapCheck = false;
                     StopShowingText();
-                    ShowText("Hold right mouse button to zoom a map, left to put a marker", 5f);
+                    ShowText("Hmm, compass seems broken..", 5f);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.V)  && !mapIsActive)
+            if (Input.GetKeyDown(KeyCode.V) && !mapIsActive)
             {
                 ultraIsActive = !ultraIsActive;
                 ultraviolet.SetActive(ultraIsActive);
             }
 
-            if (mapIsActive)
+            if (Input.GetKeyDown(KeyCode.J) )
             {
-                if (Input.GetKeyDown(KeyCode.Mouse1))
-                {
+                //звук открытия журнала
 
-                    StopAllCoroutines();
-                    Invoke("KillMe",3f);
-                    // Cursor.lockState = CursorLockMode.Confined;
-
-                    playerMovement.canMove = false;
-                    playerLook.canLook = false;
-
-                    isCursorOn = true;
-                    mapFunctions.mapIsOpen = true;
-                    // Cursor.visible = true;
-
-                    StartCoroutine(rotateCamera(Quaternion.Euler(0f, 0f, 0f), mapAnimationDelay));
-
-                    StartCoroutine(translateMap(endMapPosition, mapAnimationDelay));
-                }
-                if (Input.GetKeyUp(KeyCode.Mouse1))
-                {
-                    playerMovement.canMove = true;
-                    playerLook.canLook = true;
-                    isCursorOn = false;
-                    mapFunctions.mapIsOpen = false;
-                    StopAllCoroutines();
-                    Invoke("KillMe", 5f);
-                    // Cursor.visible = false;
-                    StartCoroutine(translateMap(startMapPosition, mapAnimationDelay));
-
-                }
+                journalIsActive = !journalIsActive;
+                journalGO.SetActive(journalIsActive);
+                //отключить передвижение и осмотр
+                CharacterWalking.canMove = !journalIsActive;
+                CharacterSight.canLook = !journalIsActive;
             }
         }
-
     }
-    IEnumerator translateMap(Vector3 targetPosition, float duration)
-    {
-        Cursor.visible = isCursorOn;
-
-        float time = 0;
-        Vector3 startPosition = map.transform.localPosition;
-        while (time < duration)
-        {
-            map.transform.localPosition = Vector3.Lerp(startPosition, targetPosition, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        map.transform.localPosition = targetPosition;
-    }
-    IEnumerator rotateCamera(Quaternion targetRotation, float duration)
-    {
-        float time = 0;
-        Quaternion startRotation = cam.gameObject.transform.localRotation;
-
-        while (time < duration)
-        {
-            cam.gameObject.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
-
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-
-        playerLook.velocity = new Vector2(playerLook.velocity.x, 0);
-
-        cam.gameObject.transform.localRotation = targetRotation;
-    }
-
     public void ShowText(string text, float timeToWait)
     {
         textCoroutine = StartCoroutine(ShowTextCoroutine(text, timeToWait));
