@@ -43,7 +43,7 @@ public class JournalController : MonoBehaviour
         {
             justOpen = false;
         }
-        Debug.Log(GameControllerCave.journalIsActive);
+       // Debug.Log(GameControllerCave.journalIsActive);
 
     }
 

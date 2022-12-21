@@ -34,11 +34,12 @@ public class CharacterInteractionCave : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, intDistance))
         {
-            
+             //Debug.Log(hit.collider.gameObject.name);
             IInteractable interactableObj = hit.collider.gameObject.GetComponent<IInteractable>();
 
             if (interactableObj != null)
             {
+               
                 if (!interactableObj.interactOnlyInMinigame&& !GameControllerCave.journalIsActive)
                 {
                     isHit = true;

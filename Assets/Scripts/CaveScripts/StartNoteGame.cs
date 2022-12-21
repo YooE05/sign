@@ -23,6 +23,11 @@ public class StartNoteGame : MonoBehaviour, IInteractable
         noteGameController.EnterMinigame();
        
     }
+    private void Update()
+    {
+        if(isEntered)
+        { Cursor.visible = true; }
+    }
 
     public void SecondInteract() { }
     public string SetDescriptiion() { return "взаимодействовать"; }

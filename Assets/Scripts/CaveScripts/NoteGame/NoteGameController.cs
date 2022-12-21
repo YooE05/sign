@@ -10,8 +10,10 @@ public class NoteGameController : MonoBehaviour
     [SerializeField] Camera mainCam;
     [SerializeField] Camera minigameCam;
 
+    [SerializeField] GameObject exitRock;
+
     public List<Note> allPlacedNotes = new List<Note>();
-    int countOfPlaces = 3;
+    int countOfPlaces = 7;
 
     public Inventory playerInv;
 
@@ -19,8 +21,11 @@ public class NoteGameController : MonoBehaviour
 
     RaycastHit hit;
 
+    public int countOfCorrect;
+
     void Start()
     {
+        countOfCorrect = 0;
         gameIsOpen = false;
     }
 
@@ -31,7 +36,7 @@ public class NoteGameController : MonoBehaviour
         if (gameIsOpen)
         {
             CharacterWalking.canMove = false;
-            mainCam.enabled=false;
+            mainCam.enabled = false;
             mainCam.gameObject.GetComponent<CharacterSight>().enabled = false;
             minigameCam.gameObject.SetActive(true);
             Cursor.visible = true;
@@ -70,16 +75,16 @@ public class NoteGameController : MonoBehaviour
 
                 if (interactableObj != null)
                 {
-                   
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
-                        {
-                            interactableObj.Interact();
-                        }
-                        if (Input.GetKeyDown(KeyCode.Mouse1))
-                        {
-                            interactableObj.SecondInteract();
-                        }
-                    
+
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        interactableObj.Interact();
+                    }
+                    if (Input.GetKeyDown(KeyCode.Mouse1))
+                    {
+                        interactableObj.SecondInteract();
+                    }
+
                 }
 
 
@@ -89,21 +94,28 @@ public class NoteGameController : MonoBehaviour
     }
     public void CheckCorrectPositions()
     {
-        int countOfCorrect = 0;
-        for (int i = 0; i < allPlacedNotes.Count; i++)
-        {
-            if (allPlacedNotes[i].rotationPos == allPlacedNotes[i].needRotationNum)
-            { countOfCorrect++; }
-        }
         if (countOfCorrect == countOfPlaces)
         {
-            EndMinigame();
+            int k = 0;
+            for (int i = 0; i < allPlacedNotes.Count; i++)
+            {
+                if (allPlacedNotes[i].rotationPos == allPlacedNotes[i].needRotationNum)
+                { k++; }
+            }
+
+            if (k == countOfPlaces)
+            {
+                EndMinigame();
+            }
         }
     }
 
     void EndMinigame()
     {
-        Debug.Log("Молодец, мудила, так держать.");
+        Debug.Log("Молодец, так держать.");
+
+        //звук смещения камней
+        exitRock.SetActive(false);
     }
 
     public void GetNoteFromInventory(int noteInd)

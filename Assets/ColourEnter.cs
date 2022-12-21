@@ -43,14 +43,12 @@ public class ColourEnter : MonoBehaviour
                 rightCombo = fullCombo.Substring(0, rightCombo.Length + 1);
                 StartCoroutine(ComboBlick(rightCombo.Length));
             }
-
-
         }
         else
         {
             for (int i = 0; i < crntCombo.Length; i++)
             {
-                if (crntCombo[i] != rightCombo[i]) { ResetCombo(); }
+                if (crntCombo[i] != rightCombo[i]) { RestartGame(); }
             }
 
         }
@@ -63,11 +61,24 @@ public class ColourEnter : MonoBehaviour
     }
 
     void ResetCombo()
-    {
-        Debug.Log("давай по новой");
+    {    
         crntCombo = "";
     }
 
+    void RestartGame()
+    {
+        // Debug.Log("давай по новой");
+       
+        //закрыть двери
+        //пусть комбо заново
+        ResetCombo();
+        isFirstBlick = true;
+        stageNumber = 0;
+        rightCombo = fullCombo[0].ToString();
+        StopAllCoroutines();
+        StartCoroutine(ComboBlick(1));
+
+    }
 
     IEnumerator ComboBlick(int countOfPassed)
     {

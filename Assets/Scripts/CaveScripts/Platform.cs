@@ -14,7 +14,7 @@ public class Platform : MonoBehaviour
 
     private void Awake()
     {
-        direction = true;//Random.Range(0, 2)>0;
+      //  direction = true;//Random.Range(0, 2)>0;
     }
 
     private void Start()

@@ -29,6 +29,11 @@ public class NotePlace : MonoBehaviour, IInteractable
             //вытащить карточку из инвентаря
             noteController.playerInv.PullNote(appropriateNote.crntNoteData);
 
+            if (appropriateNote.crntNoteData.needPlaceNum == placeNum)
+            {
+                noteController.countOfCorrect++;
+
+            }
         }
         else
         {

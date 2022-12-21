@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterWalking : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class CharacterWalking : MonoBehaviour
             other.gameObject.SetActive(false);
             FindObjectOfType<GameController>().StopShowingText();
             FindObjectOfType<GameController>().ShowText("Press 'V' to use the visor", 3f);
+        }
+
+        if (other.gameObject.tag == "Finish")
+        {
+            SceneManager.LoadScene("Game");
         }
     }
 }

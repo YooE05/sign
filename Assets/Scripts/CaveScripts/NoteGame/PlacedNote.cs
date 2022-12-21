@@ -11,8 +11,14 @@ public class PlacedNote : MonoBehaviour, IInteractable
     public bool interactOnlyInMinigame { get => true; }
     public void Interact()
     {
+        if (crntNoteData.needPlaceNum == appropriatePlace.placeNum)
+        {
+            noteController.countOfCorrect--;
+        }
+
         //сн€ть карточку, поместить обратно в инвентарь
         appropriatePlace.ClearData();
+
     }
     public void SetUpView()
     {
@@ -33,9 +39,10 @@ public class PlacedNote : MonoBehaviour, IInteractable
     public void RotateNoteProperly()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
-        transform.Rotate(transform.right, crntNoteData.rotationPos * 90f);
-        if (crntNoteData.needPlaceNum == appropriatePlace.placeNum)
-        { noteController.CheckCorrectPositions(); }
+        transform.Rotate(Vector3.right, crntNoteData.rotationPos * 90f);
+        transform.rotation = Quaternion.Euler(new Vector3(transform.localEulerAngles.x, -transform.localEulerAngles.y , transform.localEulerAngles.z));
+       
+        noteController.CheckCorrectPositions();
     }
     public string SetDescriptiion()
     {

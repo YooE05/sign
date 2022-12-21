@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0524074725775584f86e85ab54f55a66, type: 3}
   m_Name: Note2
   m_EditorClassIdentifier: 
-  noteSprite: {fileID: 21300000, guid: aef62eaffd8871c4a9636c08e2037aa2, type: 3}
+  noteSprite: {fileID: 21300000, guid: 0a82bdfbd05b88e49b8b6338091f08d9, type: 3}
   rotationPos: 1
   needPlaceNum: 2
   needRotationNum: 0
