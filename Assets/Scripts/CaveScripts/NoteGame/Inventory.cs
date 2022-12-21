@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] List<Note> takenNotes = new List<Note>();
     [SerializeField] List<GameObject> invCells = new List<GameObject>();
     [SerializeField] JournalController journal;
-
+    [SerializeField] Sprite freeCell;
 
     private void Start()
     {
@@ -59,10 +59,18 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < invCells.Count; i++)
         {
             if (i < takenNotes.Count)
-            { invCells[i].GetComponent<Image>().sprite = takenNotes[i].noteSprite; }
+            {
+                
+                invCells[i].GetComponent<Image>().sprite = takenNotes[i].noteSprite; 
+            
+                if(i== takenNotes.Count-1)
+                {
+                    invCells[i].GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0, 90 * UnityEngine.Random.Range(0, 4));
+                }
+            }
             else
             {
-                invCells[i].GetComponent<Image>().sprite = null;
+                invCells[i].GetComponent<Image>().sprite = freeCell;
             }
 
         }

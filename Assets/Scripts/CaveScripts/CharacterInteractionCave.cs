@@ -34,19 +34,22 @@ public class CharacterInteractionCave : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, intDistance))
         {
-             //Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log(hit.collider.gameObject.name);
             IInteractable interactableObj = hit.collider.gameObject.GetComponent<IInteractable>();
 
             if (interactableObj != null)
             {
-               
-                if (!interactableObj.interactOnlyInMinigame&& !GameControllerCave.journalIsActive)
+
+                if (!interactableObj.interactOnlyInMinigame && !GameControllerCave.journalIsActive)
                 {
-                    isHit = true;
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (hit.collider.tag == "hint" && GameControllerCave.ultraIsActive || hit.collider.tag != "hint")
                     {
-                        interactableObj.Interact();
-                        interactableObj.SetDescriptiion();
+                        isHit = true;
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            interactableObj.Interact();
+                            interactableObj.SetDescriptiion();
+                        }
                     }
                 }
             }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ColourEnter : MonoBehaviour
 {
+    [SerializeField] int comboLenth;
+    [SerializeField] int countOfColors;
     [SerializeField] string fullCombo; //сделать генерацию рандомной
     string rightCombo;
     string crntCombo;
@@ -22,6 +24,11 @@ public class ColourEnter : MonoBehaviour
         rightCombo = fullCombo[0].ToString();
         StartCoroutine(ComboBlick(1));
     }
+
+   /* void GenerateCombo()
+    {
+
+    }*/
     void CheckUp()
     {
         if (crntCombo == rightCombo)
