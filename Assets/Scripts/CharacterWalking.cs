@@ -45,5 +45,6 @@ public class CharacterWalking : MonoBehaviour
         {
             SceneManager.LoadScene("Game");
         }
+
     }
 }

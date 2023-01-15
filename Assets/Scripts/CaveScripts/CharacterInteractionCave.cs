@@ -37,7 +37,7 @@ public class CharacterInteractionCave : MonoBehaviour
             //Debug.Log(hit.collider.gameObject.name);
             IInteractable interactableObj = hit.collider.gameObject.GetComponent<IInteractable>();
 
-            if (interactableObj != null)
+            if (interactableObj != null&& hit.collider.tag!="nonInteract")
             {
 
                 if (!interactableObj.interactOnlyInMinigame && !GameControllerCave.journalIsActive)

@@ -32,7 +32,10 @@ public class NoteInWorld : MonoBehaviour, IInteractable
         inInventory = true;
         //сн€ть карточку, поместить обратно в инвентарь
         noteController.playerInv.AddNoteFromWorld(this);
-        gameObject.SetActive(false);
+          gameObject.tag = "nonInteract";
+       
+
+      //  gameObject.SetActive(false);
     }
     public void Awake()
     {

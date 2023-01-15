@@ -10,6 +10,8 @@ TagManager:
   - forestTrigger1
   - forestTrigger2
   - lever
+  - lava
+  - nonInteract
   layers:
   - Default
   - TransparentFX

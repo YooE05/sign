@@ -11,6 +11,7 @@ public class NoteGameController : MonoBehaviour
     [SerializeField] Camera minigameCam;
 
     [SerializeField] GameObject exitRock;
+    [SerializeField] Animator endAnimator;
 
     public List<Note> allPlacedNotes = new List<Note>();
     int countOfPlaces = 7;
@@ -79,6 +80,7 @@ public class NoteGameController : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Mouse0))
                     {
                         interactableObj.Interact();
+                        endAnimator.SetBool("doorIsOpen", false);
                     }
                     if (Input.GetKeyDown(KeyCode.Mouse1))
                     {
@@ -115,7 +117,8 @@ public class NoteGameController : MonoBehaviour
         Debug.Log("ћолодец, так держать.");
 
         //звук смещени€ камней
-        exitRock.SetActive(false);
+       // exitRock.SetActive(false);
+        endAnimator.SetBool("doorIsOpen", true);// ("RaiseRock");
     }
 
     public void GetNoteFromInventory(int noteInd)

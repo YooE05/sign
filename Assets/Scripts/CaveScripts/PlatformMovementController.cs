@@ -5,9 +5,12 @@ using System;
 
 public class PlatformMovementController : MonoBehaviour
 {
+    [SerializeField] Camera puzzleCamera;
+    [SerializeField] Camera mainCamera;
+
     [SerializeField] int gridX, gridY;//последняя координата в сетке, т.е. -1 от фактического количества
 
-    [SerializeField] float unit = 2f;
+    [SerializeField] float unit;
 
     public bool canPressButton;
     [SerializeField] bool moveByX;
@@ -20,12 +23,27 @@ public class PlatformMovementController : MonoBehaviour
     {
         if (countOfStoppedPl == countOfAllPl)
         {
-            canPressButton = true;
+            
             countOfAllPl = -1;
+
+
+            Invoke("ReturnMovementToPlayer", 0.5f);
+
+
         }
     }
 
-    public int countOfStoppedPl =0;
+    void ReturnMovementToPlayer()
+    {
+        canPressButton = true;
+        //вернуть камеру и движение игроку
+        CharacterWalking.canMove = true;
+        CharacterSight.canLook = true;
+        puzzleCamera.enabled = false;
+        mainCamera.enabled = true;
+    }
+
+    public int countOfStoppedPl = 0;
     public int countOfAllPl = -1;
     public void MovePlatform(List<Platform> platforms)
     {
@@ -75,6 +93,12 @@ public class PlatformMovementController : MonoBehaviour
 
     IEnumerator MoveTheFcknPlatformAlready(Platform pl, float off, Action endCoroutine)
     {
+        //сменить камеру и остановить движение игроку
+
+        CharacterWalking.canMove = false;
+        CharacterSight.canLook = false;
+        puzzleCamera.enabled = true;
+        mainCamera.enabled = false;
         float remainTime = 0f;
         Vector3 startPos = pl.gameObject.transform.localPosition;
         Vector3 endPos;
@@ -86,19 +110,24 @@ public class PlatformMovementController : MonoBehaviour
         {
             endPos = pl.gameObject.transform.localPosition + new Vector3(0f, 0f, off) * unit;
         }
- 
+
 
         while (remainTime < delay * Mathf.Abs(off))
         {
+
             remainTime += Time.deltaTime;
 
             pl.gameObject.transform.localPosition = Vector3.Lerp(startPos, endPos, remainTime / (delay * Mathf.Abs(off)));
 
             yield return null;
+
+
         }
+
         pl.gameObject.transform.localPosition = endPos;
+
         pl.crntGridPosition.x += off;
         endCoroutine.Invoke();
-       
+
     }
 }

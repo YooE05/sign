@@ -18,7 +18,7 @@ public class JournalController : MonoBehaviour
     {
         crntPage = 1;
         justOpen = false;
-        //SetUpCrntPage();
+        pageCount = (jNotes.Count % 4 == 0 ? jNotes.Count / 4 : jNotes.Count / 4) + 1;
     }
 
     private void Update()
@@ -29,6 +29,7 @@ public class JournalController : MonoBehaviour
             {
                 justOpen = true;
                 SetUpCrntPage();
+                Cursor.visible=true;
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -41,6 +42,7 @@ public class JournalController : MonoBehaviour
         }
         else
         {
+            Cursor.visible = false;
             justOpen = false;
         }
        // Debug.Log(GameControllerCave.journalIsActive);
@@ -50,7 +52,7 @@ public class JournalController : MonoBehaviour
     public void AddFindedNote(NoteInWorld newNote)
     {
         jNotes.Add(newNote);
-        pageCount = jNotes.Count % 4 == 0 ? jNotes.Count / 4 : jNotes.Count / 4 + 1;
+        pageCount = (jNotes.Count % 4 == 0 ? jNotes.Count / 4 : jNotes.Count / 4) + 1;
         SetUpCrntPage();
     }
     public void AddMinigameNote(Note newNote)
@@ -81,12 +83,13 @@ public class JournalController : MonoBehaviour
         {
             crntPage--;
         }
-        crntPage = Mathf.Clamp(crntPage, 1, pageCount);
+        
         SetUpCrntPage();
     }
 
     void SetUpCrntPage()
     {
+        crntPage = Mathf.Clamp(crntPage, 1, pageCount);
         //crntPage = Mathf.Clamp(crntPage, 1, pageCount);
         for (int i = 0; i < 4; i++)
         {

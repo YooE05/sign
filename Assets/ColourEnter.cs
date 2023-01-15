@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ColourEnter : MonoBehaviour
 {
@@ -16,19 +17,52 @@ public class ColourEnter : MonoBehaviour
     int stageNumber;
     bool isFirstBlick;
 
+    [SerializeField] bool secondPuzzle;
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.C)&& secondPuzzle)
+        {
+         
+            stageNumber = 10;
+            doorAnimator.SetInteger("OpenedDoor", stageNumber);
+        }
+    }
+
     private void Start()
     {
+
         isFirstBlick = true;
         stageNumber = 0;
         crntCombo = "";
+        RegenerateFullCombo();
         rightCombo = fullCombo[0].ToString();
         StartCoroutine(ComboBlick(1));
     }
 
-   /* void GenerateCombo()
+    void RegenerateFullCombo()
     {
+        fullCombo = "";
+        int rand = GetRandColourNum();
+        for (int i = 0; i < comboLenth; i++)
+        {
+            fullCombo += rand;
+            rand = GetRandColourNum();
+            if (fullCombo.Length >= 2)
+            {
+                
+                do { rand = GetRandColourNum(); }
+                while (rand == Convert.ToInt32(fullCombo[i - 1].ToString())&& (Convert.ToInt32(fullCombo[i - 1].ToString()) == Convert.ToInt32(fullCombo[i].ToString())));
 
-    }*/
+            }
+        }
+
+
+    }
+    int GetRandColourNum()
+    {
+        return UnityEngine.Random.Range(1, countOfColors + 1);
+    }
     void CheckUp()
     {
         if (crntCombo == rightCombo)
@@ -68,19 +102,20 @@ public class ColourEnter : MonoBehaviour
     }
 
     void ResetCombo()
-    {    
+    {
         crntCombo = "";
     }
 
     void RestartGame()
     {
         // Debug.Log("давай по новой");
-       
+
         //закрыть двери
         //пусть комбо заново
         ResetCombo();
         isFirstBlick = true;
         stageNumber = 0;
+        RegenerateFullCombo();
         rightCombo = fullCombo[0].ToString();
         StopAllCoroutines();
         StartCoroutine(ComboBlick(1));

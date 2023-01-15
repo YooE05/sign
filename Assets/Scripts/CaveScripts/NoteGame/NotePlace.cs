@@ -12,7 +12,7 @@ public class NotePlace : MonoBehaviour, IInteractable
     public void Interact()
     {
         //включить карточку и передать ей данные текущей выбранной из инвентаря
-        if (noteController.crntPickNote != null)
+        if (noteController.crntPickNote != null&& !appropriateNote.gameObject.activeSelf)
         {
             Debug.Log("note Placed");
             appropriateNote.crntNoteData = noteController.crntPickNote;
